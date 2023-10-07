@@ -2,7 +2,11 @@ let books = {
   1: {
     author: "Chinua Achebe",
     title: "Things Fall Apart",
-    reviews: { 1: "Good book", 2: "Great book", 3: "Best book i ever read" },
+    reviews: {
+        ankit:"Review by ankit tehlan",
+        swati:"Review by swati tehlan",
+        ahana:"Review by ahana tehlan"
+    },
   },
   2: {
     author: "Hans Christian Andersen",
