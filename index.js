@@ -14,7 +14,22 @@ app.use(
 );
 
 app.use("/customer/auth/*", function auth(req, res, next) {
-  //Write the authenication mechanism here
+  if (req.session.authorization) {
+    let token = req.session.authorization["accessToken"];
+    jwt.verify(token, "verysecretkey", (err, user) => {
+      if (!err) {
+        console.log(`accessToken: ${token}`);
+        req.user = user;
+        next();
+      } else {
+        res
+          .status(403)
+          .json({ message: "User not authorized to use this service" });
+      }
+    });
+  } else {
+    res.status(403).json({ message: "User not authenticated to website" });
+  }
 });
 
 const PORT = 5001;
