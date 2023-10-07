@@ -71,7 +71,6 @@ regd_users.put("/auth/review/:isbn", (req, res) => {
   if (user) {
     console.log(`adding review for user: ${user}`);
     let existingReview = book["reviews"][user];
-    console.log(`existing review: ${existingReview}`);
     if (!existingReview) {
       book["reviews"][user] = review;
       return res.send(`Successfully added a new review for user: ${user}.`);
@@ -79,6 +78,24 @@ regd_users.put("/auth/review/:isbn", (req, res) => {
       book["reviews"][user] = review;
       return res.send(`Updated the existing review for user: ${user}.`);
     }
+  } else {
+    return res.send(`User not exsist ${user}`);
+  }
+});
+
+// Delete a book review
+regd_users.delete("/auth/review/:isbn", (req, res) => {
+  const isbn = req.params.isbn;
+  const user = req.session.authorization["username"];
+  let book = books[isbn];
+  if (!book) {
+    return res.send(`Unable to find book with isbn: ${isbn}`);
+  }
+  if (user) {
+    delete book["reviews"][user];
+    return res.send(
+      `Review on book ISBN# ${isbn} has been successfully deleted by ${user}!`
+    );
   } else {
     return res.send(`User not exsist ${user}`);
   }
